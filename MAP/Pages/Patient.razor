@@ -10,27 +10,30 @@
     }
 </style>
 
-
+<center>
 <MudContainer Class="d-flex align-center justify-center mud-width-full"  style="height:70vh;">
-<MudCard Outlined="true" Square="false" Elevation="100" Style="width: 400px; height: 400px" Class="mt-5">
+<MudCard Outlined="true" Square="false" Style="width: 450px; height: 400px" Class="border-double border-4 mud-border-warning pa-4">
     
-       
-       <MudCardContent>
-           <center>
-          @* <MudImage Src="Images/pcso.png" Width="150" Height="150" Elevation="25" Class="rounded-lg ma-20"/>*@
-           <br /><br />
-        <MudText Typo="Typo.h5">Medical Assistance Program</MudText></center>
-      <br/><br />
-      <MudStack>
-      <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.AppRegistration" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="Registration">Registration</MudButton>
-      <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Article" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Application</MudButton>
-      <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Announcement" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Status</MudButton>
-      <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.KeyboardReturn" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="ReturntoHomePage">Return to Homepage</MudButton>
+   <MudCardContent>
+         <br />
+         <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 75px" >
+            <MudText Typo="Typo.h5">Medical Access Program</MudText>
+            <MudText Typo="Typo.h5"><b>(Patient Portal)</b></MudText>
+         </MudPaper>
+         <br/>
+      
+    <MudStack>
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.AppRegistration" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="Registration">Registration</MudButton>
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl"  StartIcon="@Icons.Material.Filled.Article" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Application</MudButton>
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.Announcement" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Status</MudButton>
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.KeyboardReturn" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="ReturntoHomePage">Return to Homepage</MudButton>
     </MudStack> 
- </MudCardContent>
+    </MudCardContent>
              
-            </MudCard>   
+</MudCard>   
 </MudContainer>
+</center>
+
 
 @code{
     private void ReturntoHomePage()
@@ -42,5 +45,4 @@
         NavigationManager.NavigateTo("/Registration");
     }
     
-    
-     }
+    }
