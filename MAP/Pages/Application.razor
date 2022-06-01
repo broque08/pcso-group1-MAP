@@ -1,8 +1,8 @@
 ﻿@layout UserLayout
-@page "/Registration"
+@page "/Application"
 @inject NavigationManager NavigationManager
 
-<PageTitle>Registration</PageTitle>
+<PageTitle>Application</PageTitle>
 
 <style>
     body {
@@ -12,23 +12,22 @@
 
 <center>
 <MudContainer Class="d-flex align-center justify-center mud-width-full"  style="height:70vh;">
-<MudCard Outlined="true" Square="false" Style="width: 450px; height: 600px" Class="border-double border-4 mud-border-warning pa-4">
+<MudCard Outlined="true" Square="false" Style="width: 450px; height: 420px" Class="border-double border-4 mud-border-warning pa-4">
     
    <MudCardContent>
          <br />
          <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 75px" >
             <MudText Typo="Typo.h5">Medical Access Program</MudText>
-            <MudText Typo="Typo.h5"><b>(Registration)</b></MudText><br />
+            <MudText Typo="Typo.h5"><b>(Application)</b></MudText><br />
             <MudAvatar Rounded="true" Color="Color.Warning"  Variant="Variant.Outlined">
-            <MudIcon Icon="@Icons.Material.Filled.AppRegistration" />
+            <MudIcon Icon="@Icons.Material.Filled.Article" />
             </MudAvatar>
          </MudPaper>
          <br/><br><br />
-   <MudTextField @bind-Value="FirstName" Label="First Name" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="MiddleName" Label="Middle Name" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="LastName" Label="Last Name" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="ExtensionName" Label="Extension Name" Variant="Variant.Outlined"></MudTextField>
-   <MudDatePicker @bind-Date="date" Variant="Variant.Outlined" Placeholder="Birthday" Editable="true" Mask="@(new DateMask("MM.dd.yyyy"))" DateFormat="MM.dd.yyyy"/>
+   <MudTextField @bind-Value="ApplicationNumber" Label="ApplicationNumber" Variant="Variant.Outlined"></MudTextField>
+  <MudAutocomplete T="string" Label="Assistance" @bind-Value="value1" SearchFunc="@Search1" Variant="Variant.Outlined" />
+    
+       
 
       <br /><br />
       <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.CheckCircle" Style="@($"color:{Colors.Blue.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Submit</MudButton>
@@ -43,16 +42,28 @@
 
 
 @code {
-    public string FirstName { get; set; }
-    public string MiddleName { get; set; }
-    public string LastName { get; set; }
-    public string ExtensionName { get; set; }
-
-    DateTime? date = null;
-
-
+    public string ApplicationNumber { get; set; }
+    
     private void Cancel()
     {
         NavigationManager.NavigateTo("/");
     }
+
+    private string value1;
+    private string[] states =
+    {
+        "Sample1", "Sample2", "Sample3", "Sample4",
+        
+    };
+    private async Task<IEnumerable<string>> Search1(string value)
+    {
+        // In real life use an asynchronous function for fetching data from an api.
+        await Task.Delay(5);
+
+        // if text is null or empty, show complete list
+        if (string.IsNullOrEmpty(value))
+            return states;
+        return states.Where(x => x.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+    }
+}
 }

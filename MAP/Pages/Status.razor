@@ -1,5 +1,5 @@
 ﻿@layout UserLayout
-@page "/Registration"
+@page "/Status"
 @inject NavigationManager NavigationManager
 
 <PageTitle>Registration</PageTitle>
@@ -12,23 +12,20 @@
 
 <center>
 <MudContainer Class="d-flex align-center justify-center mud-width-full"  style="height:70vh;">
-<MudCard Outlined="true" Square="false" Style="width: 450px; height: 600px" Class="border-double border-4 mud-border-warning pa-4">
+<MudCard Outlined="true" Square="false" Style="width: 450px; height: 420px" Class="border-double border-4 mud-border-warning pa-4">
     
    <MudCardContent>
          <br />
          <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 75px" >
             <MudText Typo="Typo.h5">Medical Access Program</MudText>
-            <MudText Typo="Typo.h5"><b>(Registration)</b></MudText><br />
+            <MudText Typo="Typo.h5"><b>(Application Status)</b></MudText><br />
             <MudAvatar Rounded="true" Color="Color.Warning"  Variant="Variant.Outlined">
-            <MudIcon Icon="@Icons.Material.Filled.AppRegistration" />
+            <MudIcon Icon="@Icons.Material.Filled.Announcement" />
             </MudAvatar>
          </MudPaper>
          <br/><br><br />
-   <MudTextField @bind-Value="FirstName" Label="First Name" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="MiddleName" Label="Middle Name" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="LastName" Label="Last Name" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="ExtensionName" Label="Extension Name" Variant="Variant.Outlined"></MudTextField>
-   <MudDatePicker @bind-Date="date" Variant="Variant.Outlined" Placeholder="Birthday" Editable="true" Mask="@(new DateMask("MM.dd.yyyy"))" DateFormat="MM.dd.yyyy"/>
+   <MudTextField @bind-Value="ReferenceNumber" Label="Reference Number" Variant="Variant.Outlined"></MudTextField>
+   <MudTextField @bind-Value="ApplicationStatus" Label="Status" Variant="Variant.Outlined"></MudTextField>
 
       <br /><br />
       <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.CheckCircle" Style="@($"color:{Colors.Blue.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Submit</MudButton>
@@ -43,13 +40,8 @@
 
 
 @code {
-    public string FirstName { get; set; }
-    public string MiddleName { get; set; }
-    public string LastName { get; set; }
-    public string ExtensionName { get; set; }
-
-    DateTime? date = null;
-
+    public string ReferenceNumber { get; set; }
+    public string ApplicationStatus { get; set; }
 
     private void Cancel()
     {

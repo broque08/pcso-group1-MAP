@@ -24,8 +24,8 @@
       
     <MudStack>
       <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.AppRegistration" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="Registration">Registration</MudButton>
-      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl"  StartIcon="@Icons.Material.Filled.Article" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Application</MudButton>
-      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.Announcement" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Status</MudButton>
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl"  StartIcon="@Icons.Material.Filled.Article" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="Application">Application</MudButton>
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.Announcement" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="ApplicationStatus">Status</MudButton>
       <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.KeyboardReturn" Style="@($"color:{Colors.Yellow.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="ReturntoHomePage">Return to Homepage</MudButton>
     </MudStack> 
     </MudCardContent>
@@ -43,6 +43,14 @@
     private void Registration()
     {
         NavigationManager.NavigateTo("/Registration");
+    }
+    private void Application()
+    {
+        NavigationManager.NavigateTo("/Application");
+    }
+    private void ApplicationStatus()
+    {
+        NavigationManager.NavigateTo("/Status");
     }
     
     }
