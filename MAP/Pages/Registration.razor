@@ -1,14 +1,6 @@
 ﻿@layout UserLayout
 @page "/Registration"
-@using System.Text.Json;
-@using System.Text.Json.Serialization;
-@using System.Net.Http.Headers;
-@using System.Text;
-@using System.Text.RegularExpressions
 @inject NavigationManager NavigationManager
-@using Blazored.Toast.Services
-@using Blazored.Toast.Configuration
-@inject IToastService toastService
 
 <PageTitle>Registration</PageTitle>
 
@@ -19,34 +11,34 @@
 </style>
 
 <center>
-    <MudContainer Class="d-flex align-center justify-center mud-width-full" style="height:70vh;">
-        <MudCard Outlined="true" Square="false" Style="width: 450px; height: 600px" Class="border-double border-4 mud-border-warning pa-4">
+<MudContainer Class="d-flex align-center justify-center mud-width-full"  style="height:70vh;">
+<MudCard Outlined="true" Square="false" Style="width: 450px; height: 600px" Class="border-double border-4 mud-border-warning pa-4">
+    
+   <MudCardContent>
+         <br />
+         <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 75px" >
+            <MudText Typo="Typo.h5">Medical Access Program</MudText>
+            <MudText Typo="Typo.h5"><b>(Registration)</b></MudText><br />
+            <MudAvatar Rounded="true" Color="Color.Warning"  Variant="Variant.Outlined">
+            <MudIcon Icon="@Icons.Material.Filled.AppRegistration" />
+            </MudAvatar>
+         </MudPaper>
+         <br/><br><br />
+   <MudTextField @bind-Value="FirstName" Label="First Name" Variant="Variant.Outlined"></MudTextField>
+   <MudTextField @bind-Value="MiddleName" Label="Middle Name" Variant="Variant.Outlined"></MudTextField>
+   <MudTextField @bind-Value="LastName" Label="Last Name" Variant="Variant.Outlined"></MudTextField>
+   <MudTextField @bind-Value="ExtensionName" Label="Extension Name" Variant="Variant.Outlined"></MudTextField>
+   <MudDatePicker @bind-Date="date" Variant="Variant.Outlined" Placeholder="Birthday" Editable="true" Mask="@(new DateMask("MM.dd.yyyy"))" DateFormat="MM.dd.yyyy"/>
 
-            <MudCardContent>
-                <br />
-                <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 75px">
-                    <MudText Typo="Typo.h5">Medical Access Program</MudText>
-                    <MudText Typo="Typo.h5"><b>(Registration)</b></MudText><br />
-                    <MudAvatar Rounded="true" Color="Color.Warning" Variant="Variant.Outlined">
-                        <MudIcon Icon="@Icons.Material.Filled.AppRegistration" />
-                    </MudAvatar>
-                </MudPaper>
-                <br /><br><br />
-                <MudTextField @bind-Value="FirstName" Label="First Name" Variant="Variant.Outlined"></MudTextField>
-                <MudTextField @bind-Value="MiddleName" Label="Middle Name" Variant="Variant.Outlined"></MudTextField>
-                <MudTextField @bind-Value="LastName" Label="Last Name" Variant="Variant.Outlined"></MudTextField>
-                <MudTextField @bind-Value="ExtensionName" Label="Extension Name" Variant="Variant.Outlined"></MudTextField>
-                <MudDatePicker @bind-Date="date" Variant="Variant.Outlined" Placeholder="Birthday" Editable="true" Mask="@(new DateMask("MM.dd.yyyy"))" DateFormat="MM.dd.yyyy" />
-
-                <br /><br />
-                <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.CheckCircle" Style="@($"color:{Colors.Blue.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large" @onclick="Submit">Submit</MudButton>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.Cancel" Style="@($"color:{Colors.Red.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large" @onclick="Cancel">Cancel</MudButton>
-
-            </MudCardContent>
-
-        </MudCard>
-    </MudContainer>
+      <br /><br />
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.CheckCircle" Style="@($"color:{Colors.Blue.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Submit</MudButton>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl"  StartIcon="@Icons.Material.Filled.Cancel" Style="@($"color:{Colors.Red.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large" @onclick="Cancel">Cancel</MudButton>
+      
+    </MudCardContent>
+             
+</MudCard>   
+</MudContainer>
 </center>
 
 
@@ -55,54 +47,12 @@
     public string MiddleName { get; set; }
     public string LastName { get; set; }
     public string ExtensionName { get; set; }
-    DateTime? date =null;
+
+    DateTime? date = null;
 
 
     private void Cancel()
     {
         NavigationManager.NavigateTo("/");
-    }
-
-    private async void Submit()
-    {
-        try
-        {
-        char[] specialChar = new char[] { '.', ' ', ':' };
-        var ApplicantID = DateTime.Now.ToString();
-        string ApplicantIndex = Regex.Replace(ApplicantID,@"[.: / A-Z]","");
-        HttpClient httpClient = new HttpClient();
-        ApplicantDetails applicantDetails = new ApplicantDetails();
-        applicantDetails.ApplicantID = ApplicantIndex;
-        applicantDetails.FirstName = FirstName;
-        applicantDetails.MiddleName = MiddleName;
-        applicantDetails.LastName = LastName;
-        applicantDetails.ExtensionName = ExtensionName;
-        applicantDetails.date = date;
-
-
-
-        string myContent = JsonSerializer.Serialize(applicantDetails);
-        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
-        ByteArrayContent byteContent = new ByteArrayContent(buffer);
-        byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-        httpClient.PostAsync("https://localhost:7066/api/Applicants", byteContent);
-        toastService.ShowSuccess($"Succefully Save", $"{ApplicantIndex}");
-        }catch(Exception e){
-
-
-        }
-    
-    }
-
-    public class ApplicantDetails
-    {
-        public string ApplicantID { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string LastName { get; set; }
-        public string ExtensionName { get; set; }
-        public DateTime? date { get; set; }
-
-
     }
 }
