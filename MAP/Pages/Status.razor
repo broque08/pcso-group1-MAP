@@ -2,7 +2,7 @@
 @page "/Status"
 @inject NavigationManager NavigationManager
 
-<PageTitle>Registration</PageTitle>
+<PageTitle>Application Status</PageTitle>
 
 <style>
     body {
@@ -25,7 +25,7 @@
          </MudPaper>
          <br/><br><br />
    <MudTextField @bind-Value="ReferenceNumber" Label="Reference Number" Variant="Variant.Outlined"></MudTextField>
-   <MudTextField @bind-Value="ApplicationStatus" Label="Status" Variant="Variant.Outlined"></MudTextField>
+   <MudTextField @bind-Value="ApplicationStatus" Label="Status" ReadOnly="true" Variant="Variant.Outlined"></MudTextField>
 
       <br /><br />
       <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.CheckCircle" Style="@($"color:{Colors.Blue.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Submit</MudButton>

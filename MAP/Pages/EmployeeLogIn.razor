@@ -1,12 +1,7 @@
-﻿@inject IJSRuntime JS
+﻿@layout UserLayout
 @page "/EmployeeLogIn"
 @inject NavigationManager NavigationManager
-@using Blazored.Toast.Configuration
-@inject IToastService toastService
-@using System.ComponentModel.DataAnnotations;
-@using System.Text.Json;
-@using System.Text.Json.Serialization;
-@using Blazored.Toast.Services;
+@using System.ComponentModel.DataAnnotations
 
 <PageTitle>PCSO Employee Login</PageTitle>
 
@@ -45,24 +40,18 @@
 </center>
 
 @code {
-
-    private RegisterAccountForm model = new RegisterAccountForm();
-    private RegisterAccountForm login;
+    RegisterAccountForm model = new RegisterAccountForm();
     bool success;
-    string jsonData;
-
 
     public class RegisterAccountForm
     {
         [Required]
         [StringLength(8, ErrorMessage = "Name length can't be more than 8.")]
-        public string? username { get; set; }
+        public string Username { get; set; }
 
         [Required]
         [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-        public string? password { get; set; }
-
-        public string? nameofUser { get; set; }
+        public string Password { get; set; }
 
     }
 
@@ -91,7 +80,7 @@
             {
                 
                 NavigationManager.NavigateTo("/User");
-                toastService.ShowSuccess($"Welcome, {login.nameofUser}!", "SUCCESS");
+                toastService.ShowSuccess("Succefully Save", "SUCCESS");
             }
         }
         catch (Exception e)
