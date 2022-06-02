@@ -16,9 +16,6 @@
     }
 </style>
 
-
-
-
 <center>
     <MudContainer Class="d-flex align-center justify-center mud-width-full" style="height:70vh;">
         <MudCard Outlined="true" Square="false" Style="width: 480px; height: 500px" Class="border-double border-4 mud-border-warning pa-4" Elevation="0">
@@ -94,7 +91,7 @@
             {
                 
                 NavigationManager.NavigateTo("/User");
-                toastService.ShowSuccess("Succefully Save", "SUCCESS");
+                toastService.ShowSuccess($"Welcome, {login.nameofUser}!", "SUCCESS");
             }
         }
         catch (Exception e)
