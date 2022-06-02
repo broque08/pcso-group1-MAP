@@ -1,7 +1,12 @@
-﻿@layout UserLayout
+﻿@inject IJSRuntime JS
 @page "/EmployeeLogIn"
 @inject NavigationManager NavigationManager
-@using System.ComponentModel.DataAnnotations
+@using Blazored.Toast.Configuration
+@inject IToastService toastService
+@using System.ComponentModel.DataAnnotations;
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+@using Blazored.Toast.Services;
 
 <PageTitle>PCSO Employee Login</PageTitle>
 
@@ -11,47 +16,56 @@
     }
 </style>
 
- <center>
-<MudContainer Class="d-flex align-center justify-center mud-width-full"  style="height:70vh;">
-<MudCard Outlined="true" Square="false"  Style="width: 480px; height: 500px" Class="border-double border-4 mud-border-warning pa-4" Elevation="0">
-   
-    <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
-    <br />
-    <MudImage Src="Images/users.png" Width="150" Height="150" Elevation="25" Class="rounded-lg ma-20"/>
-    <br /><br />
-    <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 45px" >
-    <MudText Typo="Typo.h5"><b>PCSO Employee Login</b></MudText>
-    </MudPaper>
-        
-    <MudCardContent>
-    <MudTextField Label="UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-2" 
-    @bind-Value="model.Username" For="@(() => model.Username)"/>
-    <MudTextField Label="Password" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-2"
-    @bind-Value="model.Password" For="@(() => model.Password)" InputType="InputType.Password"/>
-    <br />
-    <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.Login" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Login</MudButton>
-     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.ArrowBack" Style="@($"color:{Colors.DeepOrange.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large"@onclick="ReturntoHomePage">Back</MudButton>   
-    </MudCardContent>
-    </EditForm>
 
-</MudCard>   
-</MudContainer>
+
+
+<center>
+    <MudContainer Class="d-flex align-center justify-center mud-width-full" style="height:70vh;">
+        <MudCard Outlined="true" Square="false" Style="width: 480px; height: 500px" Class="border-double border-4 mud-border-warning pa-4" Elevation="0">
+
+            <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+                <br />
+                <MudImage Src="Images/users.png" Width="150" Height="150" Elevation="25" Class="rounded-lg ma-20" />
+                <br /><br />
+                <MudPaper Class="pa-md-2 mx-lg-auto mud-theme-warning" Style="width: 350px; height: 45px">
+                    <MudText Typo="Typo.h5"><b>PCSO Employee Login</b></MudText>
+                </MudPaper>
+
+                <MudCardContent>
+                    <MudTextField Label="UserName" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-2"
+                                  @bind-Value="model.username" For="@(() => model.username)" />
+                    <MudTextField Label="Password" Variant="Variant.Outlined" Margin="Margin.Dense" Class="mt-2"
+                                  @bind-Value="model.password" For="@(() => model.password)" InputType="InputType.Password" />
+                    <br />
+                    <MudButton Variant="Variant.Filled" @onclick="LoginUser" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.Login" Style="@($"color:{Colors.LightGreen.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large">Login</MudButton>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <MudButton Variant="Variant.Filled" class="py-2 px-6 mx-2 rounded-xl" StartIcon="@Icons.Material.Filled.ArrowBack" Style="@($"color:{Colors.DeepOrange.Accent3}; background:{Colors.BlueGrey.Darken4};")" Size="Size.Large" @onclick="ReturntoHomePage">Back</MudButton>
+                </MudCardContent>
+            </EditForm>
+        </MudCard>
+    </MudContainer>
+
 </center>
 
 @code {
-    RegisterAccountForm model = new RegisterAccountForm();
+
+    private RegisterAccountForm model = new RegisterAccountForm();
+    private RegisterAccountForm login;
     bool success;
+    string jsonData;
+
 
     public class RegisterAccountForm
     {
         [Required]
         [StringLength(8, ErrorMessage = "Name length can't be more than 8.")]
-        public string Username { get; set; }
+        public string? username { get; set; }
 
         [Required]
         [StringLength(30, ErrorMessage = "Password must be at least 8 characters long.", MinimumLength = 8)]
-        public string Password { get; set; }
+        public string? password { get; set; }
+
+        public string? nameofUser { get; set; }
 
     }
 
@@ -65,7 +79,33 @@
     {
         NavigationManager.NavigateTo("/");
     }
-    
+    private async Task LoginUser()
+    {
+        try
+        {
 
+            HttpClient httpClient = new HttpClient();
+            string Username = model.username;
+            login = await httpClient.GetFromJsonAsync<RegisterAccountForm>("https://localhost:7066/api/Users/"+Username);
+            //List<RegisterAccountForm> test = new List<RegisterAccountForm>();
+            //string myContent = JsonSerializer.Serialize(test);
+            // await httpClient.PutAsync("https://localhost:7066/api/",test);
+            if (login.username == Username)
+            {
+                
+                NavigationManager.NavigateTo("/User");
+                toastService.ShowSuccess("Succefully Save", "SUCCESS");
+            }
+        }
+        catch (Exception e)
+        {
+             
+               toastService.ShowError("Oops! Ivalid username and password");
+           
+        }
+
+
+    }
+  
 }
 
